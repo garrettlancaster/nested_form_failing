@@ -1,0 +1,29 @@
+<%= nested_form_for(@person) do |f| %>
+  <% if @person.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@person.errors.count, "error") %> prohibited this person from being saved:</h2>
+
+      <ul>
+      <% @person.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <%= f.fields_for :birthday do |bday| %>
+    <%= bday.fields_for :gifts do |gift| %>
+      <%= render 'gifts_fields', f: gift %>
+    <% end %>
+    <%= bday.link_to_add 'Add Gift', :gifts %>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
